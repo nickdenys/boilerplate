@@ -379,6 +379,12 @@ a {
     text-decoration: underline; }
 
 /**
+ * Responsive images
+ */
+img {
+  max-width: 100%; }
+
+/**
  * Basic typography style for copy text
  */
 body {

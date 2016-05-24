@@ -17,7 +17,7 @@ html {
  */
 *, *::before, *::after {
   box-sizing: inherit;
-} 
+}
 
 /**
  * Basic styles for links
@@ -31,3 +31,8 @@ a {
     text-decoration: underline;
   }
 }
+
+/**
+ * Responsive images
+ */
+img { max-width: 100%; }
