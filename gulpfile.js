@@ -1,4 +1,4 @@
-// Define plugins.
+// Globals
 var gulp          = require("gulp");
 var autoprefixer  = require("gulp-autoprefixer");
 var concat        = require("gulp-concat");
@@ -33,7 +33,7 @@ files.distJs    = paths.dist + "js/**/*.js";
 // Default task when calling Gulp.
 gulp.task('default', ['build:dev']);
 // Build the application (Development).
-gulp.task('build:dev', ['sass', 'min:js'], function() {
+gulp.task('build:dev', ['sass', 'jshint'], function() {
   console.log(util.colors.yellow.bgBlue.bold(' App built (Development). '));
 });
 // Build the application (Production).
@@ -50,9 +50,13 @@ gulp.task('clean', function(done) {
 gulp.task('watch', function() {
   livereload.listen();
   gulp.watch(files.sass, ['sass'])
-    .on('change', function(event){
-      console.log(util.colors.red('File:') + ' ' + event.path + ' ' + util.colors.yellow(event.type));
-    });
+    .on('change', function(event) { cb(event); });
+  gulp.watch(files.js, ['jshint'])
+    .on('change', function(event) { cb(event); });
+
+  function cb(e) {
+    console.log(util.colors.red('File:') + ' ' + e.path + ' ' + util.colors.yellow(e.type));
+  }
 });
 
 // Compile .scss files.
@@ -92,13 +96,21 @@ gulp.task('min:css', ['sass'], function() {
     .pipe(gulp.dest(paths.css))
 });
 // Minify the concatinated JS file.
-gulp.task('min:js', ['vendor:js'], function() {
+gulp.task('min:js', ['jshint', 'vendor:js'], function() {
   gulp.src([files.js, "!" + files.jsVendor])
     .pipe(uglify())
     .pipe(rename({suffix: '.min'}))
     .pipe(gulp.dest(paths.distJs))
 });
+// Run JSHint and move the files to the dist folder
+gulp.task('jshint', function() {
+  return gulp.src([files.js, "!" + files.jsVendor])
+    .pipe(jshint())
+    .pipe(jshint.reporter('jshint-stylish'))
+    .pipe(gulp.dest(paths.distJs));
+});
+// Move the vendor files to the dist folder.
 gulp.task('vendor:js', function() {
   gulp.src(files.jsVendor)
-    .pipe(gulp.dest(paths.distJsVendor))
+    .pipe(gulp.dest(paths.distJsVendor));
 });
