@@ -1,9 +1,9 @@
 {
   "name": "Boilerplate",
   "author": "Nick Denys",
-  "description": "A fresh start for a new project.",
+  "description": "A simple front-end boilerplate with Sass and Gulp.",
   "version": "1.0.0",
-  "license": "ISC",
+  "homepage": "https://github.com/nickdenys/boilerplate",
   "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.1.0",
