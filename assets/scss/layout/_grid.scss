@@ -1,0 +1,233 @@
+// -----------------------------------------------------------------------------
+// This file contains all settings and functions to generate the grid classes.
+// -----------------------------------------------------------------------------
+
+// Calculations
+$grid-width: ($columns * $column-width) + (($columns ) * $gutter-width);
+
+// Percentage function
+@function percentage($size, $width) {
+  @return $size / $width * 100%;
+}
+
+// Calculate column width
+@function column($value) {
+  $width: $value * $column-width + ($value ) * $gutter-width;
+  @return percentage($width, $grid-width);
+}
+
+// Clearfix mixin
+@mixin clearfix() {
+  &:before,
+  &:after {
+    content: '';
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+  & {
+    *zoom: 1;
+  }
+}
+
+/// Mixin to define the column settings for all breakpoints.
+/// The parameter is to pass onto the column mixin.
+@mixin column-content($i) {
+  flex-basis: column($i);
+  max-width: column($i);
+  @include old-ie {
+    width: column($i);
+  }
+}
+
+/// Mixin to support old IE versions (8+9)
+/// $old-ie variable must be true
+@mixin old-ie {
+  @if $old-ie == true {
+    .old-ie & {
+      @content;
+    }
+  }
+}
+
+/// Mixin gutter-output
+/// If $fixed-gutter-size is set to true this will output
+/// the $gutter-width as a fixed value and not percentage
+@mixin gutter-output {
+  @if $fixed-gutter-size == true {
+    padding-left: $gutter-width / 2;
+    padding-right: $gutter-width / 2;
+  }
+  @else {
+    padding-left: percentage($gutter-width, $grid-width) / 2;
+    padding-right: percentage($gutter-width, $grid-width) / 2;
+  }
+}
+
+
+// Grid
+.container {
+  @include old-ie {
+    @include clearfix;
+  }
+}
+
+// Wrapper class for .col classes
+.flex {
+  display: flex;
+  flex-flow: row wrap;
+  @include old-ie {
+    @include clearfix;
+  }
+}
+
+// Helper classes
+.flex--auto {
+  .col {
+    flex-grow: 1;
+  }
+}
+
+.flex--start {
+  justify-content: flex-start;
+  .col {
+    flex-grow: 0;
+  }
+}
+
+.flex--center {
+  justify-content: center;
+  .col {
+    flex-grow: 0;
+  }
+  @include old-ie {
+    .flex--center {
+      float: none;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+}
+
+.flex--end {
+  justify-content: flex-end;
+  // default columns class required to be altered
+  .col {
+    flex-grow: 0;
+  }
+}
+
+.flex--top {
+  align-items: flex-start;
+}
+
+.flex--middle {
+  align-items: center;
+}
+
+.flex--baseline {
+  align-items: baseline;
+}
+
+.flex--wrap {
+  flex-wrap: wrap;
+}
+
+.flex--row {
+  flex-direction: row;
+}
+
+.flex--bottom {
+  align-items: flex-end;
+  .col {
+    flex-grow: 1;
+  }
+}
+
+
+.flex--around {
+  justify-content: space-around;
+  // default columns class required to be altered
+  .col {
+    flex-grow: 0;
+    flex-shrink: 1;
+  }
+}
+
+.flex--between {
+  justify-content: space-between;
+  // default columns class required to be altered
+  .col {
+    flex-grow: 0;
+    flex-shrink: 1;
+  }
+}
+
+.flex--reverse {
+  flex-direction: row-reverse;
+}
+
+// Default columns class - auto flex
+.col {
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: auto;
+  max-width: 100%;
+  @include gutter-output;
+  @include old-ie {
+    float: left;
+    display: block;
+  }
+}
+.col--first {
+  order: -1;
+}
+.col--last {
+  order: 1;
+}
+
+// Cycles through $columns and calculates widths
+@for $i from 1 through $columns {
+  .col--#{$i} {
+    @include column-content($i);
+  }
+}
+
+// Cycles through $columns and calculates offsets
+@for $i from 1 through $columns {
+  .col__offset--#{$i} {
+    margin-left: column($i);
+  }
+}
+
+// Cycles through $columns and
+// generates column classes for different breakpoints
+@include respond-to(small) {
+  @for $i from 1 through $columns {
+    .col__sm--#{$i} {
+      @include column-content($i);
+    }
+  }
+}
+@include respond-to(medium) {
+  @for $i from 1 through $columns {
+    .col__md--#{$i} {
+      @include column-content($i);
+    }
+  }
+}
+@include respond-to(large) {
+  @for $i from 1 through $columns {
+    .col__lg--#{$i} {
+      @include column-content($i);
+    }
+  }
+}
+@include respond-to(xlarge) {
+  @for $i from 1 through $columns {
+    .col__xl--#{$i} {
+      @include column-content($i);
+    }
+  }
+}

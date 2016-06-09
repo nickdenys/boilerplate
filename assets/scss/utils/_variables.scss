@@ -43,6 +43,13 @@ $dark-grey: #444 !default;
 /// @type Length
 $max-width: 1200px !default;
 
+/// Grid configuration
+$columns: 12 !default;
+$column-width: 81px !default;
+$gutter-width: 18px !default;
+$fixed-gutter-size: true !default;
+$old-ie: false !default; // Provide fallbacks for IE8/9?
+
 
 
 

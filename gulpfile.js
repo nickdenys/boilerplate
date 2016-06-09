@@ -52,13 +52,13 @@ gulp.task('watch', function() {
     .on('change', function(event) { cb(event); });
 
   function cb(e) {
-    console.log(util.colors.red('File:') + ' ' + e.path + ' ' + util.colors.yellow(e.type));
+    console.log(util.colors.blue('File:') + ' ' + e.path + ' ' + util.colors.yellow(e.type));
   }
 });
 
 // Compile .scss files. Provide callback for min:css
 gulp.task('sass', function() {
-  return gulp.src(files.sass)
+  return gulp.src(path.assets + 'scss/main.scss')
     .pipe(sass())
     .on('error', sass.logError)
     .pipe(autoprefixer({
