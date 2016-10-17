@@ -10,6 +10,7 @@ Options:
 * `gulp build` : builds and compiles your Sass and JavaScript files **for Production**
 * `gulp build:dev` : builds and compiles your Sass and JavaScript files **for Development**
 * `gulp watch` : watches your Sass and JavaScript files for any changes and compiles them automatically
+* `gulp clean` : removes your `dist` folder completely.
 
 ## LiveReload
 
